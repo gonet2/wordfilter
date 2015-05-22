@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto;
+
+// word filtering service definition
+service WordFilterService{
+	rpc Filter(WordFilter.Text) returns (WordFilter.Text) {} // 关键字过滤
+}
+
+message WordFilter {
+	message Text{
+		string text=1;
+	}
+}
