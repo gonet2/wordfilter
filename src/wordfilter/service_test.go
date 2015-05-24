@@ -3,8 +3,8 @@ package main
 import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	pb "proto"
 	"testing"
-	pb "wordfilter/proto"
 )
 
 const (
