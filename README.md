@@ -1,5 +1,5 @@
 #word filter service
-base on https://github.com/huichen/sego
+based on https://github.com/huichen/sego
 
 # install
 install gpm, gvp first        
