@@ -26,15 +26,15 @@ func (s *server) init() {
 
 	dict_path, dirty_words_path := s.data_path()
 	// 载入字典
-	log.Trace(SERVICE, "Loading Dictionary...")
+	log.Trace("Loading Dictionary...")
 	s.segmenter.LoadDictionary(dict_path)
-	log.Trace(SERVICE, "Dictionary Loaded")
+	log.Trace("Dictionary Loaded")
 
 	// 读取脏词库
 	log.Trace(SERVICE, "Loading Dirty Words...")
 	f, err := os.Open(dirty_words_path)
 	if err != nil {
-		log.Critical(SERVICE, err)
+		log.Critical(err)
 		os.Exit(-1)
 	}
 	defer f.Close()
@@ -49,7 +49,7 @@ func (s *server) init() {
 			s.dirty_words[word] = true
 		}
 	}
-	log.Trace(SERVICE, "Dirty Words Loaded")
+	log.Trace("Dirty Words Loaded")
 }
 
 // get correct dict path from GOPATH

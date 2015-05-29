@@ -12,12 +12,13 @@ const (
 )
 
 func main() {
+	log.SetPrefix(SERVICE)
 	// 监听
 	lis, err := net.Listen("tcp", _port)
 	if err != nil {
-		log.Critical(SERVICE, err)
+		log.Critical(err)
 	}
-	log.Info(SERVICE, "listening on ", lis.Addr())
+	log.Info("listening on ", lis.Addr())
 
 	// 注册服务
 	s := grpc.NewServer()
