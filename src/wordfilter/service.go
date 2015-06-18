@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	log "github.com/GameGophers/nsq-logger"
+	log "github.com/GameGophers/libs/nsq-logger"
 	"github.com/huichen/sego"
 	"golang.org/x/net/context"
 	"os"
