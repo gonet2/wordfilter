@@ -1,5 +1,5 @@
 #wordfilter(文字过滤)
-[![Build Status](https://travis-ci.org/GameGophers/wordfilter.svg?branch=master)](https://travis-ci.org/GameGophers/wordfilter)
+[![Build Status](https://travis-ci.org/gonet2/wordfilter.svg?branch=master)](https://travis-ci.org/gonet2/wordfilter)
 
 ## 设计理念
 基于 https://github.com/huichen/sego 实现，首先对文本进行分词，然后和脏词库中的词汇进行比对，时间复杂度为O(m)， 其中m为需要处理的消息长度, 和脏词库的大小无关。              
