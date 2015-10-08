@@ -2,9 +2,20 @@
 // source: wordfilter.proto
 // DO NOT EDIT!
 
+/*
+Package proto is a generated protocol buffer package.
+
+It is generated from these files:
+	wordfilter.proto
+
+It has these top-level messages:
+	WordFilter
+*/
 package proto
 
 import proto1 "github.com/golang/protobuf/proto"
+import fmt "fmt"
+import math "math"
 
 import (
 	context "golang.org/x/net/context"
@@ -12,11 +23,9 @@ import (
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ context.Context
-var _ grpc.ClientConn
-
-// Reference imports to suppress errors if they are not otherwise used.
 var _ = proto1.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 type WordFilter struct {
 }
@@ -33,8 +42,9 @@ func (m *WordFilter_Text) Reset()         { *m = WordFilter_Text{} }
 func (m *WordFilter_Text) String() string { return proto1.CompactTextString(m) }
 func (*WordFilter_Text) ProtoMessage()    {}
 
-func init() {
-}
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
 
 // Client API for WordFilterService service
 
@@ -69,9 +79,9 @@ func RegisterWordFilterServiceServer(s *grpc.Server, srv WordFilterServiceServer
 	s.RegisterService(&_WordFilterService_serviceDesc, srv)
 }
 
-func _WordFilterService_Filter_Handler(srv interface{}, ctx context.Context, codec grpc.Codec, buf []byte) (interface{}, error) {
+func _WordFilterService_Filter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
 	in := new(WordFilter_Text)
-	if err := codec.Unmarshal(buf, in); err != nil {
+	if err := dec(in); err != nil {
 		return nil, err
 	}
 	out, err := srv.(WordFilterServiceServer).Filter(ctx, in)
