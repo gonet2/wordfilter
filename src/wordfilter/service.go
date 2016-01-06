@@ -72,7 +72,7 @@ func (s *server) Filter(ctx context.Context, in *pb.WordFilter_Text) (*pb.WordFi
 	for _, seg := range segments {
 		word := bin[seg.Start():seg.End()]
 		if s.dirty_words[strings.ToUpper(string(word))] {
-			replacement := strings.Repeat("▇", utf8.RuneCount(word))
+			replacement := strings.Repeat("*", utf8.RuneCount(word))
 			clean_text = append(clean_text, []byte(replacement)...)
 		} else {
 			clean_text = append(clean_text, word...)
