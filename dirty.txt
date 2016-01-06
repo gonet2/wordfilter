@@ -1,4 +1,3 @@
-=== RUN   Test_xlxs
 alabamablacksnake 255
 alabama-black-snake 255
 alqaeda 255
@@ -21040,6 +21039,3 @@ d_y_k_e 255
 kike 255
 k.i.k.e 255
 k_i_k_e 255
---- PASS: Test_xlxs (0.41s)
-PASS
-ok  	numbers	6.485s
