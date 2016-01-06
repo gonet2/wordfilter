@@ -58,7 +58,7 @@ func (s *server) data_path() (dict_path string, dirty_words_path string) {
 		dirty_words_path = paths[k] + "/dirty.txt"
 		_, err := os.Lstat(dirty_words_path)
 		if err == nil {
-			dict_path = paths[k] + "/dictionary.txt," + paths[k] + "/dirty.txt"
+			dict_path = paths[k] + "/dirty.txt," + paths[k] + "/dictionary.txt"
 			return
 		}
 	}
