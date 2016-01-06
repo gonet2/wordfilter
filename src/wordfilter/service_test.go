@@ -1,17 +1,18 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"proto"
+	"sync"
 	"testing"
+	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
 var (
-	address  = "192.168.6.70:50002"
+	address  = "192.168.99.100:50002"
 	testText = []string{
 		"我操你大爷，法轮大法好",
 		"Fuck you，fuck you sisters!",
@@ -28,7 +29,7 @@ func init() {
 		return
 	}
 	conn = _conn
-	fmt.Println(replaceByte, replaceLenth)
+	//	fmt.Println(replaceByte, replaceLenth)
 }
 
 func TestWordFilter(t *testing.T) {
@@ -45,6 +46,27 @@ func TestWordFilter(t *testing.T) {
 	}
 }
 
+func Test_WorldFiter(t *testing.T) {
+	last := time.Now()
+	c := proto.NewWordFilterServiceClient(conn)
+	wait := sync.WaitGroup{}
+	for i := 0; i < 10000; i++ {
+		wait.Add(1)
+		go func() {
+			r, err := c.Filter(context.Background(), &proto.WordFilter_Text{Text: testText[i%3]})
+			if err != nil {
+				t.Fatal(err)
+			}
+			_ = r
+			wait.Done()
+		}()
+	}
+
+	wait.Wait()
+	t.Logf("cost:%v", time.Now().Sub(last))
+}
+
+// ttl 未考虑
 func BenchmarkWordFilterb(b *testing.B) {
 	c := proto.NewWordFilterServiceClient(conn)
 	for i := 0; i < b.N; i++ {
