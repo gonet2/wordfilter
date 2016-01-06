@@ -7,13 +7,18 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"golang.org/x/net/context"
+
 	log "github.com/gonet2/libs/nsq-logger"
 	"github.com/huichen/sego"
-	"golang.org/x/net/context"
 )
 
 const (
 	SERVICE = "[WORDFILTER]"
+)
+
+var (
+	replacement = []byte(strings.Repeat("▇", 50)) //"▇" len is 3
 )
 
 type server struct {
@@ -72,8 +77,7 @@ func (s *server) Filter(ctx context.Context, in *pb.WordFilter_Text) (*pb.WordFi
 	for _, seg := range segments {
 		word := bin[seg.Start():seg.End()]
 		if s.dirty_words[strings.ToUpper(string(word))] {
-			replacement := strings.Repeat("▇", utf8.RuneCount(word))
-			clean_text = append(clean_text, []byte(replacement)...)
+			clean_text = append(clean_text, replacement[:3*utf8.RuneCount(word)]...)
 		} else {
 			clean_text = append(clean_text, word...)
 		}

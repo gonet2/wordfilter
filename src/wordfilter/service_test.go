@@ -1,32 +1,55 @@
 package main
 
 import (
-	pb "proto"
+	"log"
+	"proto"
 	"testing"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 )
 
-const (
-	address   = "localhost:50002"
-	test_text = "angel dust,k.u.n.t, alabama black	snake,我操你大爷함대줄래，al qaeda法轮大法好,alabama black snake  ass hole fuck you ass hole, ass hole"
+var (
+	address  = "192.168.6.70:50002"
+	testText = []string{
+		"我操你大爷，法轮大法好",
+		"Fuck you，fuck you sisters!",
+		"개쌍또라이abasd",
+	}
+	conn *grpc.ClientConn
 )
 
-func TestWordFilter(t *testing.T) {
-	opt := grpc.WithInsecure()
+func init() {
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(address, opt)
+	_conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
-		t.Fatalf("did not connect: %v", err)
+		log.Printf("did not connect: %v", err)
+		return
 	}
-	defer conn.Close()
-	c := pb.NewWordFilterServiceClient(conn)
+	conn = _conn
+}
+
+func TestWordFilter(t *testing.T) {
+
+	c := proto.NewWordFilterServiceClient(conn)
 
 	// Contact the server and print out its response.
-	r, err := c.Filter(context.Background(), &pb.WordFilter_Text{Text: test_text})
-	if err != nil {
-		t.Fatalf("could not query: %v", err)
+	for i := 0; i < 3; i++ {
+		r, err := c.Filter(context.Background(), &proto.WordFilter_Text{Text: testText[i]})
+		if err != nil {
+			t.Fatalf("could not query: %v", err)
+		}
+		t.Logf("Filtered Text: %s", r.Text)
 	}
-	t.Logf("Filtered Text: %s", r.Text)
+}
+
+func BenchmarkWordFilterb(b *testing.B) {
+	c := proto.NewWordFilterServiceClient(conn)
+	for i := 0; i < b.N; i++ {
+		r, err := c.Filter(context.Background(), &proto.WordFilter_Text{Text: testText[i%3]})
+		if err != nil {
+			b.Fatal(err)
+		}
+		_ = r
+	}
 }
