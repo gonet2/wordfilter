@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"proto"
 	"testing"
@@ -27,6 +28,7 @@ func init() {
 		return
 	}
 	conn = _conn
+	fmt.Println(replaceByte, replaceLenth)
 }
 
 func TestWordFilter(t *testing.T) {
