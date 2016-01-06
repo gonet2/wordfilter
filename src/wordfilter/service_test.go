@@ -1,20 +1,22 @@
 package main
 
 import (
-	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 	pb "proto"
 	"testing"
+
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 )
 
 const (
 	address   = "localhost:50002"
-	test_text = "我操你大爷，法轮大法好"
+	test_text = "angel dust,k.u.n.t, alabama black	snake,我操你大爷함대줄래，al qaeda法轮大法好,alabama black snake  ass hole fuck you ass hole, ass hole"
 )
 
 func TestWordFilter(t *testing.T) {
+	opt := grpc.WithInsecure()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(address)
+	conn, err := grpc.Dial(address, opt)
 	if err != nil {
 		t.Fatalf("did not connect: %v", err)
 	}

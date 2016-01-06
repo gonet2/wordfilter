@@ -2,14 +2,14 @@ package main
 
 import (
 	"bufio"
+	"os"
+	pb "proto"
+	"strings"
+	"unicode/utf8"
+
 	log "github.com/gonet2/libs/nsq-logger"
 	"github.com/huichen/sego"
 	"golang.org/x/net/context"
-	"os"
-	pb "proto"
-	"regexp"
-	"strings"
-	"unicode/utf8"
 )
 
 const (
@@ -42,11 +42,10 @@ func (s *server) init() {
 	// 逐行扫描
 	scanner := bufio.NewScanner(f)
 	scanner.Split(bufio.ScanLines)
-
 	for scanner.Scan() {
-		word := strings.ToUpper(strings.TrimSpace(scanner.Text())) // 均处理为大写
-		if word != "" {
-			s.dirty_words[word] = true
+		words := strings.Split(strings.ToUpper(strings.TrimSpace(scanner.Text())), " ") // 均处理为大写
+		if words[0] != "" {
+			s.dirty_words[words[0]] = true
 		}
 	}
 	log.Trace("Dirty Words Loaded")
@@ -59,7 +58,7 @@ func (s *server) data_path() (dict_path string, dirty_words_path string) {
 		dirty_words_path = paths[k] + "/dirty.txt"
 		_, err := os.Lstat(dirty_words_path)
 		if err == nil {
-			dict_path = paths[k] + "/dictionary.txt"
+			dict_path = paths[k] + "/dictionary.txt," + paths[k] + "/dirty.txt"
 			return
 		}
 	}
@@ -67,16 +66,17 @@ func (s *server) data_path() (dict_path string, dirty_words_path string) {
 }
 
 func (s *server) Filter(ctx context.Context, in *pb.WordFilter_Text) (*pb.WordFilter_Text, error) {
-	segments := s.segmenter.Segment([]byte(in.Text))
-	clean_text := in.Text
-	words := sego.SegmentsToSlice(segments, false)
-	for k := range words {
-		if s.dirty_words[strings.ToUpper(words[k])] {
-			reg, _ := regexp.Compile("(?i:" + regexp.QuoteMeta(words[k]) + ")")
-			replacement := strings.Repeat("▇", utf8.RuneCountInString(words[k]))
-			clean_text = reg.ReplaceAllLiteralString(clean_text, replacement)
+	bin := []byte(in.Text)
+	segments := s.segmenter.Segment(bin)
+	clean_text := make([]byte, 0, len(bin))
+	for _, seg := range segments {
+		word := bin[seg.Start():seg.End()]
+		if s.dirty_words[strings.ToUpper(string(word))] {
+			replacement := strings.Repeat("▇", utf8.RuneCount(word))
+			clean_text = append(clean_text, []byte(replacement)...)
+		} else {
+			clean_text = append(clean_text, word...)
 		}
 	}
-
-	return &pb.WordFilter_Text{clean_text}, nil
+	return &pb.WordFilter_Text{string(clean_text)}, nil
 }
