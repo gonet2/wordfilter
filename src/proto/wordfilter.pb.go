@@ -27,24 +27,39 @@ var _ = proto1.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto1.ProtoPackageIsVersion1
+
 type WordFilter struct {
 }
 
-func (m *WordFilter) Reset()         { *m = WordFilter{} }
-func (m *WordFilter) String() string { return proto1.CompactTextString(m) }
-func (*WordFilter) ProtoMessage()    {}
+func (m *WordFilter) Reset()                    { *m = WordFilter{} }
+func (m *WordFilter) String() string            { return proto1.CompactTextString(m) }
+func (*WordFilter) ProtoMessage()               {}
+func (*WordFilter) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
 type WordFilter_Text struct {
 	Text string `protobuf:"bytes,1,opt,name=text" json:"text,omitempty"`
 }
 
-func (m *WordFilter_Text) Reset()         { *m = WordFilter_Text{} }
-func (m *WordFilter_Text) String() string { return proto1.CompactTextString(m) }
-func (*WordFilter_Text) ProtoMessage()    {}
+func (m *WordFilter_Text) Reset()                    { *m = WordFilter_Text{} }
+func (m *WordFilter_Text) String() string            { return proto1.CompactTextString(m) }
+func (*WordFilter_Text) ProtoMessage()               {}
+func (*WordFilter_Text) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0, 0} }
+
+func init() {
+	proto1.RegisterType((*WordFilter)(nil), "proto.WordFilter")
+	proto1.RegisterType((*WordFilter_Text)(nil), "proto.WordFilter.Text")
+}
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
 var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion2
 
 // Client API for WordFilterService service
 
@@ -79,16 +94,22 @@ func RegisterWordFilterServiceServer(s *grpc.Server, srv WordFilterServiceServer
 	s.RegisterService(&_WordFilterService_serviceDesc, srv)
 }
 
-func _WordFilterService_Filter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error) (interface{}, error) {
+func _WordFilterService_Filter_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WordFilter_Text)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
-	out, err := srv.(WordFilterServiceServer).Filter(ctx, in)
-	if err != nil {
-		return nil, err
+	if interceptor == nil {
+		return srv.(WordFilterServiceServer).Filter(ctx, in)
 	}
-	return out, nil
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.WordFilterService/Filter",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WordFilterServiceServer).Filter(ctx, req.(*WordFilter_Text))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 var _WordFilterService_serviceDesc = grpc.ServiceDesc{
@@ -101,4 +122,16 @@ var _WordFilterService_serviceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams: []grpc.StreamDesc{},
+}
+
+var fileDescriptor0 = []byte{
+	// 115 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0x12, 0x28, 0xcf, 0x2f, 0x4a,
+	0x49, 0xcb, 0xcc, 0x29, 0x49, 0x2d, 0xd2, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53,
+	0x4a, 0x4a, 0x5c, 0x5c, 0xe1, 0x40, 0x29, 0x37, 0xb0, 0x94, 0x94, 0x08, 0x17, 0x4b, 0x48, 0x6a,
+	0x45, 0x89, 0x10, 0x0f, 0x17, 0x4b, 0x09, 0x90, 0x96, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x34, 0xf2,
+	0xe7, 0x12, 0x44, 0xa8, 0x09, 0x4e, 0x2d, 0x2a, 0xcb, 0x4c, 0x4e, 0x15, 0xb2, 0xe2, 0x62, 0x83,
+	0x08, 0x08, 0x89, 0x41, 0x4c, 0xd4, 0x43, 0xa8, 0xd1, 0x03, 0x19, 0x22, 0x85, 0x43, 0x5c, 0x89,
+	0x21, 0x89, 0x0d, 0x2c, 0x61, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0xe4, 0x3e, 0x91, 0xe4, 0x96,
+	0x00, 0x00, 0x00,
 }
