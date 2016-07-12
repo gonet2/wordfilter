@@ -1,11 +1,12 @@
 package main
 
 import (
+	"net"
+	pb "wordfilter/proto"
+
 	log "github.com/gonet2/libs/nsq-logger"
 	_ "github.com/gonet2/libs/statsd-pprof"
 	"google.golang.org/grpc"
-	"net"
-	pb "proto"
 )
 
 const (

@@ -3,9 +3,9 @@ package main
 import (
 	"bufio"
 	"os"
-	pb "proto"
 	"strings"
 	"unicode/utf8"
+	pb "wordfilter/proto"
 
 	"golang.org/x/net/context"
 
