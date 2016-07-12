@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/net/context"
 
-	log "github.com/gonet2/libs/nsq-logger"
+	log "github.com/Sirupsen/logrus"
 	"github.com/huichen/sego"
 )
 
@@ -32,15 +32,15 @@ func (s *server) init() {
 
 	dict_path, dirty_words_path := s.data_path()
 	// 载入字典
-	log.Trace("Loading Dictionary...")
+	log.Debug("Loading Dictionary...")
 	s.segmenter.LoadDictionary(dict_path)
-	log.Trace("Dictionary Loaded")
+	log.Debug("Dictionary Loaded")
 
 	// 读取脏词库
-	log.Trace(SERVICE, "Loading Dirty Words...")
+	log.Debug("Loading Dirty Words...")
 	f, err := os.Open(dirty_words_path)
 	if err != nil {
-		log.Critical(err)
+		log.Panic(err)
 		os.Exit(-1)
 	}
 	defer f.Close()
@@ -54,7 +54,7 @@ func (s *server) init() {
 			s.dirty_words[words[0]] = true
 		}
 	}
-	log.Trace("Dirty Words Loaded")
+	log.Debug("Dirty Words Loaded")
 }
 
 // get correct dict path from GOPATH
