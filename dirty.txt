@@ -1,15 +1,9 @@
 K粉 255
-乱伦 255
-交媾 255
-小姐兼职 255
-1-eyed-snake 255
-1eyedsnake 255
 ADMIN 255
 AIDS 255
 AV电影下载 255
 Administrator 255
 Aids 255
-BACKBOJITV 255
 BESTBOZI 255
 BITCH 255
 BLOWJOB 255
@@ -81,7 +75,6 @@ ass 255
 ass-hole 255
 asses 255
 asshole 255
-assholes 255
 asskisser 255
 asspirate 255
 assspelunker 255
@@ -114,13 +107,9 @@ bestiality 255
 bimbo 255
 bin-laden 255
 binladen 255
-binladin 255
-binradin 255
 bint 255
-bintladen 255
 bitch 255
 bitcher 255
-bitchers 255
 bitches 255
 bitchin 255
 bitching 255
@@ -425,7 +414,6 @@ fulousha 255
 furburger 255
 furouji 255
 furousha 255
-game 255
 gang-bang 255
 gangbang 255
 gangbanged 255
@@ -994,13 +982,9 @@ tunbosajiki 255
 turd 255
 twat 255
 tweek 255
-u r 255
 uncle-tom 255
 unclefucker 255
 uncletom 255
-ur 255
-urban 255
-urban-rivals 255
 urine 255
 vag 255
 vagina 255
@@ -2509,7 +2493,6 @@ zoophile 255
 二逼 255
 于幼軍 255
 五星红旗 255
-亚历山大 255
 交媾 255
 交構 255
 交通部 255
@@ -6641,9 +6624,6 @@ zoophile 255
 ﾜｷﾞﾅ 255
 𨳊 255
 𨳍 255
-𨳍𨶙懵懵 255
 𨳒 255
-𨳒你老母 255
 𨳒閪 255
 𨶙 255
-𨶙樣 255

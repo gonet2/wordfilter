@@ -7,41 +7,37 @@ import (
 	"unicode/utf8"
 	pb "wordfilter/proto"
 
+	cli "gopkg.in/urfave/cli.v2"
+
 	"golang.org/x/net/context"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/huichen/sego"
 )
 
-const (
-	SERVICE = "[WORDFILTER]"
-)
-
-var (
-	replaceTo   = "*" //"▇" // "*"
-	replaceByte = []byte(strings.Repeat(replaceTo, 50))
-)
-
 type server struct {
+	replaceWord string
 	dirty_words map[string]bool
 	segmenter   sego.Segmenter
 }
 
-func (s *server) init() {
+func (s *server) init(c *cli.Context) {
+	s.replaceWord = c.String("replace-word")
 	s.dirty_words = make(map[string]bool)
 
-	dict_path, dirty_words_path := s.data_path()
+	dictionary := c.String("dictionary")
+	dirty := c.String("dirty")
+
 	// 载入字典
-	log.Debug("Loading Dictionary...")
-	s.segmenter.LoadDictionary(dict_path)
-	log.Debug("Dictionary Loaded")
+	log.Info("Loading Dictionary...")
+	s.segmenter.LoadDictionary(dictionary)
+	log.Info("Dictionary Loaded")
 
 	// 读取脏词库
-	log.Debug("Loading Dirty Words...")
-	f, err := os.Open(dirty_words_path)
+	log.Info("Loading Dirty Words...")
+	f, err := os.Open(dirty)
 	if err != nil {
-		log.Panic(err)
-		os.Exit(-1)
+		log.Fatalln(err)
 	}
 	defer f.Close()
 
@@ -54,21 +50,7 @@ func (s *server) init() {
 			s.dirty_words[words[0]] = true
 		}
 	}
-	log.Debug("Dirty Words Loaded")
-}
-
-// get correct dict path from GOPATH
-func (s *server) data_path() (dict_path string, dirty_words_path string) {
-	paths := strings.Split(os.Getenv("GOPATH"), ":")
-	for k := range paths {
-		dirty_words_path = paths[k] + "/src/wordfilter/dirty.txt"
-		_, err := os.Lstat(dirty_words_path)
-		if err == nil {
-			dict_path = paths[k] + "/src/wordfilter/dirty.txt," + paths[k] + "/src/wordfilter/dictionary.txt"
-			return
-		}
-	}
-	return
+	log.Info("Dirty Words Loaded")
 }
 
 func (s *server) Filter(ctx context.Context, in *pb.WordFilter_Text) (*pb.WordFilter_Text, error) {
@@ -78,7 +60,7 @@ func (s *server) Filter(ctx context.Context, in *pb.WordFilter_Text) (*pb.WordFi
 	for _, seg := range segments {
 		word := bin[seg.Start():seg.End()]
 		if s.dirty_words[strings.ToUpper(string(word))] {
-			clean_text = append(clean_text, replaceByte[:utf8.RuneCount(word)]...)
+			clean_text = append(clean_text, []byte(strings.Repeat(s.replaceWord, utf8.RuneCount(word)))...)
 		} else {
 			clean_text = append(clean_text, word...)
 		}
