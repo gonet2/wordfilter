@@ -1,4 +1,5 @@
-#wordfilter(文字过滤)
+# wordfilter(文字过滤)
+
 [![Build Status](https://travis-ci.org/gonet2/wordfilter.svg?branch=master)](https://travis-ci.org/gonet2/wordfilter)
 
 ## 设计理念
